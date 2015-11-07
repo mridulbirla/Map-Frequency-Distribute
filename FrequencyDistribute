@@ -55,8 +55,6 @@ def create_state_dict(file_in):
         p = p[:-1] if p.endswith("\n") else p
         st_intgr_map[p] = n
         st_name_map[n] = p
-       # state_connectivity_matrix[n] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-        #                                0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
         forward_checking_matrix[n] = [1, 1, 1, 1]
 
         n += 1
@@ -114,14 +112,7 @@ def read_constraints(f_name):
         p = st_intgr_map[i[0]]
         q = i[1]
         q = q[:-1] if q.endswith("\n") else q
-        if q == "A":
-            code = 0
-        elif q == "B":
-            code = 1
-        elif q == "C":
-            code = 2
-        elif q == "D":
-            code = 3
+        code=getcode(q)
         if not check_adjacent_color(p, code):
             return 0
         state_clr[i[0]] = q
@@ -136,22 +127,22 @@ def read_constraints(f_name):
 def getcode(color_name):
     if color_name == "A":
         return 0
-    if color_name == "B":
+    elif color_name == "B":
         return 1
-    if color_name == "C":
+    elif color_name == "C":
         return 2
-    if color_name == "D":
+    elif color_name == "D":
         return 3
 
 
 def getname(color_code):
     if color_code == 0:
         return "A"
-    if color_code == 1:
+    elif color_code == 1:
         return "B"
-    if color_code == 2:
+    elif color_code == 2:
         return "C"
-    if color_code == 3:
+    elif color_code == 3:
         return "D"
 
 
@@ -160,7 +151,6 @@ def arc_consistency(state,forward_matrix):
     for connected_state in state_connectivity_dict[state]:
         for i in range(0,4):
             if forward_matrix[state][i]==1:
-
                 if i==0 and forward_matrix[connected_state][1]==forward_matrix[connected_state][2]==forward_matrix[connected_state][3]==0:
                     p[i]=0
                 elif i==1 and forward_matrix[connected_state][0]==forward_matrix[connected_state][2]==forward_matrix[connected_state][3]==0:
@@ -186,8 +176,6 @@ def assign_frequency(state, check_matrix):
             #frwd_check_matrix = copy.deepcopy(check_matrix)
             if frwd_check_matrix[state][i] == 1:
                 next_state = stack.pop()
-                count=0
-                index=0
                 if update_forward_map(state, i, frwd_check_matrix):
                     key = st_name_map[state]
                     previous_color = state_clr[key]
@@ -248,7 +236,7 @@ else:
     print "Successfull=" + str(is_Success) + " and backtrack=" + str(backtrackcount)
     print "---" + str(time.time() - start_time) + " seconds ---"
 
-
+'''
 
     code = 0
     code1 = 0
@@ -256,6 +244,8 @@ else:
         for key in st_intgr_map.keys():
             if st_intgr_map[key] == i:
                 color = state_clr[key]
+                if color=='O':
+                    print "I didnt assign the color "
                 code = getcode(color)
                 break
         for j in state_connectivity_dict[i]:
@@ -268,3 +258,4 @@ else:
                         print "Fire in the Hole"
                     break
 
+'''
