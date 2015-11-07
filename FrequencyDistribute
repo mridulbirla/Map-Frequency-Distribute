@@ -165,8 +165,8 @@ def assign_frequency(state, check_matrix):
     global backtrackcount
     if state == 50:
         return True
-    if state==43:
-        print "a"
+    #if state==43:
+        #print "a"
     p=arc_consistency(state,check_matrix)
     for i in range(0, 4):
         if p[i]==1:
